@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Project Dashboard - Dark Theme</title>
+ <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <title>Combined Dashboard & Projects</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<!-- Using Heroicons CDN for icons -->
+<link href="https://cdn.jsdelivr.net/npm/heroicons@3.0.1/24/outline/icons.css" rel="stylesheet" />
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Fira+Code&display=swap');
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+  }
+
+  body {
+    background: #121214;
+    color: #e0e0e0;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+.navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background-color: #000;
+      border-bottom: 1px solid #444;
+      padding: 1rem 2rem;
+    }
+
+    .navbar-nav .nav-link {
+      color: #ccc !important;
+      transition: color 0.3s ease;
+    }
+
+    .navbar-nav .nav-link:hover {
+      color: #fff !important;
+    }
+  .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 3rem 2rem;
+  }
+
+  /* Header Section */
+  .project-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    margin-bottom: 5rem;
+    align-items: center;
+  }
+
+  .project-info {
+    padding-right: 2rem;
+  }
+.project-title {
+  font-size: 4rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  margin-bottom: 1.5rem;
+
+  /* Brighter space-inspired gradient */
+ background: linear-gradient(to right, #4285f4, #d96570);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+
+  .project-description {
+    font-size: 1.2rem;
+    color: #a0a8b8;
+    max-width: 620px;
+    line-height: 1.8;
+    margin-bottom: 2.5rem;
+  }
+
+  /* Buttons */
+  .action-buttons {
+    display: flex;
+    gap: 1.25rem;
+  }
+
+  .btn {
+    padding: 1rem 2.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    user-select: none;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+.btn-primary {
+ background: linear-gradient(to right, #4285f4, #d96570);
+  background-size: 300% 300%;
+  animation: buttonGradientMove 6s ease infinite;
+
+  color: white;
+  font-weight: bold;
+  font-size: 1rem;
+  padding: 14px 28px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 6px 15px rgba(161, 140, 209, 0.4);
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  opacity: 0.9;
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(161, 140, 209, 0.6);
+}
+
+@keyframes buttonGradientMove {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+
+
+  .btn-secondary {
+    background: #2d2d2d;
+    color: #c1c1c1;
+    border: 2px solid #3d3d3d;
+    box-shadow: none;
+  }
+
+  .btn-secondary:hover {
+    border-color: #00a3ff;
+    color: #00a3ff;
+    box-shadow: 0 0 10px #00a3ff;
+    transform: translateY(-3px);
+  }
+
+  /* VS Code Dashboard Section */
+  .dashboard-section {
+    background: #1e1e1e;
+    border-radius: 12px;
+    padding: 2rem 2.5rem;
+    margin-bottom: 5rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  }
+
+  .dashboard-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .dashboard-tabs span {
+    display: inline-block;
+    padding: 0.6rem 1.2rem;
+    background: #252526;
+    border-radius: 6px;
+    font-family: 'Fira Code', monospace;
+    font-size: 1rem;
+    color: #9cdcfe;
+    box-shadow: inset 0 0 5px #000000aa;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+
+  .dashboard-tabs span:hover {
+    background: #3c3c3c;
+  }
+
+  pre.code-block {
+    background: #252526;
+    padding: 1.8rem 2rem;
+    border-radius: 8px;
+    font-family: 'Fira Code', monospace;
+    font-size: 1rem;
+    color: #d4d4d4;
+    overflow-x: auto;
+    line-height: 1.5;
+    box-shadow: inset 0 0 15px #000000cc;
+  }
+
+  .tech-stack {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  padding: 20px;
+}
+
+.tech-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  padding: 10px;
+}
+
+.tech-item .logo {
+  height: 30px;
+  width: auto;
+  filter: grayscale(100%) brightness(0.5); /* Makes it visibly gray, not invisible */
+  margin-bottom: 10px;
+}
+
+.tech-item h4 {
+  margin: 0 0 8px 0;
+  font-size: 16px;
+}
+
+.tech-item p {
+  font-size: 14px;
+  line-height: 1.5;
+}
+.card-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 40px;
+  padding: 40px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.card {
+  flex: 1 1 45%;
+  max-width: 700px;
+  min-width: 350px;
+  height: 520px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 20px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  backdrop-filter: blur(8px);
+}
+
+.card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+}
+
+.card-top {
+  background: #111;
+  height: 180px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 40px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.logo {
+  width: 90px;
+  height: auto;
+  filter: grayscale(100%) brightness(0.6);
+}
+
+.card-bottom {
+  flex: 1;
+  padding: 40px;
+  background: rgba(255, 255, 255, 0.04);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card-bottom h3 {
+  margin: 0 0 20px 0;
+  font-size: 2rem;
+  color: #fff;
+  font-weight: 600;
+}
+
+.card-bottom p {
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.75;
+}
+.image-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 20px;
+  padding: 40px;
+  justify-items: center;
+}
+
+.zoom-card {
+  width: 120px;
+  height: 120px;
+  border-radius: 20px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+  transition: all 0.4s ease;
+  object-fit: cover;
+  cursor: pointer;
+  z-index: 1;
+}
+
+/* Fullscreen mode with 20% margin all around */
+.zoom-card.active {
+  position: fixed;
+  top: 20vh;
+  left: 20vw;
+  width: 60vw;
+  height: 60vh;
+  transform: none;
+  z-index: 999;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+}
+  /* Responsive tweaks */
+  @media (max-width: 900px) {
+    .project-header {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+
+    .project-info {
+      padding-right: 0;
+    }
+
+    .btn {
+      flex: 1;
+      justify-content: center;
+    }
+  }
+</style>
+</head>
+<body>
+    <section class="landing-section">
+ 
+      <nav class="navbar navbar-expand-lg navbar-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand text-white" href="#">Sarvesh</a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNav"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+      <ul class="navbar-nav">
+<li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
+<li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About</a></li>
+<li class="nav-item"><a class="nav-link" href="{% url 'addproject' %}">Projects</a></li>
+
+      </ul>
+    </div>
+  </div>
+</nav>
+  <div class="container">
+    <!-- Header Section -->
+    <header class="project-header">
+      <div class="project-info">
+        <h1 class="project-title">Project Aurora</h1>
+        <p class="project-description">
+          {{ project.description }}
+        </p>
+        <div class="action-buttons">
+          <a href="{{ project.pdf_file.url }}" class="btn btn-primary" aria-label="Download Project PDF" download>View Project PDF</a>
+          <a href="{{ project.github_url }}" class="btn btn-secondary" aria-label="GitHub Repository">GitHub Repository</a>
+        </div>
+      </div>
+
+      <!-- VS Code Dashboard -->
+      <div class="dashboard-section" role="region" aria-label="Code preview">
+        <div class="dashboard-header">
+          <div class="dashboard-tabs" role="tablist" aria-label="Code files">
+            <span role="tab" tabindex="0" aria-selected="true">index.ts</span>
+            <span role="tab" tabindex="-1" aria-selected="false">schema.graphql</span>
+          </div>
+        </div>
+        <pre class="code-block"><code><span style="color: #569CD6">interface</span> <span style="color: #4EC9B0">User</span> {
+    <span style="color: #9CDCFE">id</span>: <span style="color: #4EC9B0">string</span>;
+    <span style="color: #9CDCFE">name</span>: <span style="color: #4EC9B0">string</span>;
+    <span style="color: #9CDCFE">email</span>: <span style="color: #4EC9B0">string</span>;
+    <span style="color: #9CDCFE">createdAt</span>: <span style="color: #4EC9B0">Date</span>;
+}
+<span style="color: #569CD6">const</span> <span style="color: #4FC1FF">api</span> = <span style="color: #DCDCAA">new</span> <span style="color: #4EC9B0">AuroraAPI</span>({
+    <span style="color: #9CDCFE">clusterId</span>: <span style="color: #CE9178">"us-east-1"</span>,
+    <span style="color: #9CDCFE">auth</span>: <span style="color: #CE9178">"bearer-token"</span>
+});</code></pre>
+      </div>
+    </header>
+<div class="image-grid">
+  {% if project.grid_image_1 %}
+    <img src="{{ project.grid_image_1.url }}" alt="Grid Image 1" class="zoom-card" />
+  {% endif %}
+  {% if project.grid_image_2 %}
+    <img src="{{ project.grid_image_2.url }}" alt="Grid Image 2" class="zoom-card" />
+  {% endif %}
+  {% if project.grid_image_3 %}
+    <img src="{{ project.grid_image_3.url }}" alt="Grid Image 3" class="zoom-card" />
+  {% endif %}
+  {% if project.grid_image_4 %}
+    <img src="{{ project.grid_image_4.url }}" alt="Grid Image 4" class="zoom-card" />
+  {% endif %}
+</div>
+
+
+
+    <!-- Hardware/Software Cards -->
+ <div class="card-row">
+  <div class="card">
+    <div class="card-top">
+      <img src="{{ project.card_image_1.url }}" alt="AI" class="logo">
+    </div>
+    <div class="card-bottom">
+      <div>
+        <h3>{{ project.card_title_1 }}</h3>
+        <p>{{ project.card_desc_1 }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-top">
+      <img src="logo4.png" alt="LangChain" class="logo">
+    </div>
+    <div class="card-bottom">
+      <div>
+        <h3>{{ project.card_title_2 }}</h3>
+        <p>{{ project.card_desc_2 }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="tech-stack">
+  <div class="tech-item">
+    <img src="{{ project.tech_icon_1 }}" alt="{{ project.tech_title_1 }} Logo" class="logo">
+    <h4>{{ project.tech_title_1 }}</h4>
+    <p>{{ project.tech_desc_1 }}</p>
+  </div>
+  <div class="tech-item">
+    <img src="{{ project.tech_icon_2 }}" alt="{{ project.tech_title_2 }} Logo" class="logo">
+    <h4>{{ project.tech_title_2 }}</h4>
+    <p>{{ project.tech_desc_2 }}</p>
+  </div>
+  <div class="tech-item">
+    <img src="{{ project.tech_icon_3 }}" alt="{{ project.tech_title_3 }} Logo" class="logo">
+    <h4>{{ project.tech_title_3 }}</h4>
+    <p>{{ project.tech_desc_3 }}</p>
+  </div>
+  <div class="tech-item">
+    <img src="{{ project.tech_icon_4 }}" alt="{{ project.tech_title_4 }} Logo" class="logo">
+    <h4>{{ project.tech_title_4 }}</h4>
+    <p>{{ project.tech_desc_4 }}</p>
+  </div>
+</div>
+<script>
+  const cards = document.querySelectorAll('.zoom-card');
+
+  cards.forEach(card => {
+    card.addEventListener('click', () => {
+      card.classList.toggle('active');
+    });
+  });
+</script>
+
+
+</body>
+</html>

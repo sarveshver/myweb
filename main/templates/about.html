@@ -1,0 +1,1784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Supabase Clone with Timeline</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <title>Combined Dashboard & Projects</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<!-- Using Heroicons CDN for icons -->
+<link href="https://cdn.jsdelivr.net/npm/heroicons@3.0.1/24/outline/icons.css" rel="stylesheet" /> 
+  <style>
+    /* ======== EXISTING SUPABASE STYLES ======== */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      background: #000;
+      color: white;
+      overflow-x: hidden;
+    }
+
+   .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background-color: #000;
+      border-bottom: 1px solid #444;
+      padding: 1rem 2rem;
+    }
+
+    .navbar-nav .nav-link {
+      color: #ccc !important;
+      transition: color 0.3s ease;
+    }
+
+    .navbar-nav .nav-link:hover {
+      color: #fff !important;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 100px 20px;
+      max-width: 800px;
+      margin: auto;
+    }
+
+    .hero h1 {
+      font-size: 4.5rem;
+      font-weight: 600;
+      margin: 0;
+      line-height: 1.1;
+    }
+
+    .hero h1 span {
+      font-size: 4rem;
+      background: linear-gradient(to right, #4285f4, #d96570);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-fill-color: transparent;
+    }
+
+    .hero p {
+      color: #aaa;
+      margin-top: 20px;
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+
+    .form-inline {
+      margin-top: 30px;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .email-input {
+      padding: 12px 15px;
+      font-size: 1rem;
+      border: 1px solid #333;
+      border-radius: 5px;
+      width: 280px;
+      background-color: #1a1a1a;
+      color: white;
+    }
+
+    .shiny-cta {
+      padding: 12px 15px;
+      padding-left: 25px;
+      font-size: 1rem;
+      width: 200px;
+      border: 1.5px solid rgba(255, 255, 255, 0.3);
+      border-radius: 5px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+
+    .shiny-cta:hover {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.6);
+    }
+
+    .marquee-wrapper {
+      position: relative;
+      width: 50%;
+      max-width: 1000px;
+      margin: 0 auto 80px;
+      overflow: hidden;
+      bottom: -80px;
+    }
+
+    .marquee-track {
+      display: flex;
+      gap: 40px;
+      width: max-content;
+      animation: scroll 20s linear infinite;
+      animation-delay: 0s;
+    }
+
+    .icon {
+      height: 38px;
+      flex-shrink: 0;
+      filter: grayscale(100%) brightness(0.8);
+      transition: filter 0.3s;
+    }
+
+    .icon:hover {
+      filter: grayscale(0%) brightness(1);
+    }
+
+    @keyframes scroll {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(-50%);
+      }
+    }
+
+    .fade-left,
+    .fade-right {
+      position: absolute;
+      top: 0;
+      width: 30%;
+      height: 100%;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .fade-left {
+      left: 0;
+      background: linear-gradient(to right, #000 0%, transparent 100%);
+    }
+
+    .fade-right {
+      right: 0;
+      background: linear-gradient(to left, #000 0%, transparent 100%);
+    }
+
+   .image-grid-section {
+  padding: 60px 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+
+    .grid-title {
+      text-align: center;
+      margin-bottom: 10px;
+      font-size: 2.5rem;
+      font-weight: 600;
+      background: linear-gradient(to right, #22c55e, #3b82f6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-fill-color: transparent;
+    }
+    
+    .grid-subtitle {
+      text-align: center;
+      color: #aaa;
+      font-size: 1.1rem;
+      margin-bottom: 40px;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.6;
+    }
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 35px;
+  padding: 20px 40px; /* 40px left/right padding */
+  width: 100%;
+  box-sizing: border-box;
+}
+
+
+    .grid-item {
+      position: relative;
+      border-radius: 12px;
+      overflow: hidden;
+      height: 500px; /* Increased height */
+  width: 100%;   /* Optional: make it span full column */
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    .grid-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .grid-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
+      padding: 25px;
+      opacity: 0.9;
+      transform: translateY(20px);
+      transition: all 0.4s ease;
+    }
+
+    .grid-overlay h3 {
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #fff;
+    }
+    
+    .grid-overlay .subtitle {
+      color: #22c55e;
+      font-size: 0.9rem;
+      font-weight: 500;
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    .grid-overlay p {
+      color: #ddd;
+      margin: 0;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .grid-item:hover {
+      transform: translateY(-8px);
+     
+    }
+
+    .grid-item:hover img {
+      transform: scale(1.05);
+    }
+
+    .grid-item:hover .grid-overlay {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* Hire Section */
+   
+    /* ======== INTEGRATED TIMELINE SECTION ======== */
+    .timeline-section {
+      background: #0a0a0a;
+      padding: 80px 20px;
+      position: relative;
+      overflow: hidden;
+      border-top: 1px solid #333;
+      border-bottom: 1px solid #333;
+    }
+    
+    .timeline-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #22c55e, transparent);
+    }
+    
+    .timeline-container-wrapper {
+      max-width: 900px;
+      width: 100%;
+      margin: 0 auto;
+      z-index: 2;
+    }
+    
+    .timeline-header {
+      text-align: center;
+      padding: 0 0 40px;
+      position: relative;
+    }
+    
+    .timeline-handle {
+      color: #666;
+      font-size: 1rem;
+      margin-bottom: 5px;
+      letter-spacing: 1px;
+      font-weight: 300;
+    }
+    
+    .timeline-title {
+      font-size: 2.4rem;
+      font-weight: 700;
+      margin: 0 0 5px;
+      letter-spacing: -0.5px;
+      color: #f0f0f0;
+    }
+    
+    .timeline-title span {
+       background: linear-gradient(to right, #4285f4, #d96570);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-fill-color: transparent;
+    }
+    
+    .timeline-quote {
+      color: #aaa;
+      font-weight: 400;
+      font-size: 1.3rem;
+      line-height: 1.5;
+      max-width: 500px;
+      margin: 30px auto 0;
+      position: relative;
+      font-style: italic;
+      min-height: 4rem;
+    }
+    
+    .timeline-content-container {
+      position: relative;
+      padding: 30px 0 60px;
+      margin: 10px 0;
+      overflow: hidden;
+    }
+    
+    .timeline-wrapper {
+      position: relative;
+      height: 200px;
+      display: flex;
+      align-items: center;
+    }
+    
+    .timeline-fade {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 150px;
+      z-index: 3;
+      pointer-events: none;
+    }
+    
+    .timeline-fade-left {
+      left: 0;
+      background: linear-gradient(to right, #0a0a0a, rgba(10, 10, 10, 0));
+    }
+    
+    .timeline-fade-right {
+      right: 0;
+      background: linear-gradient(to left, #0a0a0a, rgba(10, 10, 10, 0));
+    }
+    
+    .timeline-track {
+      position: relative;
+      height: 1px;
+      background: rgba(100, 100, 100, 0.3);
+      margin: 0 40px;
+      border-radius: 1px;
+    }
+    
+    .timeline-progress {
+      position: absolute;
+      height: 100%;
+      width: 0;
+      background: #22c55e;
+      transition: width 0.6s ease;
+    }
+    
+    .timeline-events {
+      position: absolute;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      height: 100px;
+      width: 100%;
+      transition: transform 0.8s cubic-bezier(0.22, 0.61, 0.36, 1);
+      left: 0;
+    }
+    
+    .timeline-event {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100px;
+      cursor: pointer;
+      transition: all 0.4s ease;
+      top: 0;
+    }
+    
+    .timeline-event.active {
+      z-index: 10;
+    }
+    
+    .timeline-event p {
+      font-size: 1.1rem;
+      font-weight: 500;
+      text-align: center;
+      margin-top: 12px;
+      color: #ccc;
+      transition: all 0.3s ease;
+    }
+    
+    .timeline-event span {
+     background: linear-gradient(to right, #4285f4, #d96570);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-fill-color: transparent;
+    }
+    
+    .timeline-dot {
+      width: 10px;
+      height: 10px;
+     background: linear-gradient(to right, #4285f4, #d96570);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-fill-color: transparent;
+      border-radius: 50%;
+      z-index: 2;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+    
+    .timeline-line {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, #444, transparent);
+      margin-top: 6px;
+      transition: all 0.3s ease;
+    }
+    
+    .timeline-event.active .timeline-dot {
+      width: 14px;
+      height: 14px;
+      background: #22c55e;
+      box-shadow: 0 0 8px rgba(34, 197, 94, 0.5);
+    }
+    
+    .timeline-event.active .timeline-line {
+      height: 60px;
+      background: linear-gradient(to bottom, #22c55e, transparent);
+    }
+    
+    .timeline-event.active p {
+      color: #fff;
+      font-weight: 600;
+    }
+    
+    .event-details {
+      background: rgba(20, 20, 20, 0.95);
+      border: 1px solid rgba(60, 60, 60, 0.5);
+      border-radius: 8px;
+      padding: 25px;
+      margin: 30px auto 40px;
+      max-width: 600px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+      text-align: center;
+    }
+    
+    .event-details h3 {
+      background: linear-gradient(to right, #4285f4, #d96570);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-fill-color: transparent;
+      margin-bottom: 15px;
+      font-size: 1.4rem;
+      font-weight: 600;
+    }
+    
+    .event-details p {
+      font-size: 1rem;
+      font-weight: 300;
+      line-height: 1.6;
+      color: #bbb;
+    }
+    
+    .timeline-controls {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin: 0 auto 30px;
+      max-width: 500px;
+    }
+    
+    .timeline-btn {
+      background: rgba(25, 25, 25, 0.9);
+      color: #aaa;
+      border: 1px solid rgba(60, 60, 60, 0.5);
+      padding: 10px 22px;
+      font-size: 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 400;
+    }
+    
+    .timeline-btn:hover {
+      
+      background: rgba(35, 35, 35, 0.9);
+      color: #ddd;
+      border-color: #22c55e;
+    }
+    
+    .timeline-btn:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+      border-color: rgba(60, 60, 60, 0.3);
+    }
+    
+    .year-display {
+      text-align: center;
+      font-size: 1rem;
+      margin-top: 10px;
+      color: #22c55e;
+      font-weight: 500;
+      letter-spacing: 1px;
+    }
+    .hire-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 60px 40px;
+  gap: 40px;
+  flex-wrap: wrap; 
+   margin-left: 20px;/* Allow wrapping on small screens */
+}
+
+/* Left Text Content */
+.hire-left {
+  flex: 1 1 600px;
+  max-width: 600px;
+}
+
+.hire-label {
+  color: #aaa;
+  font-size: clamp(10px, 1vw, 12px);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.hire-left h1 {
+  font-size: clamp(24px, 5vw, 36px);
+  line-height: 1.4;
+  margin-bottom: 20px;
+}
+
+.hire-description {
+  color: #bbb;
+  font-size: clamp(14px, 3vw, 16px);
+  margin-bottom: 20px;
+}
+
+.hire-learn {
+  color: #fff;
+  text-decoration: underline;
+  font-size: clamp(12px, 2vw, 14px);
+}
+
+/* Right Icon Grid */
+.hire-icon-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(20px, 6vw, 34px) 20px; /* vertical gap fluid, horizontal gap fixed small */
+  align-items: center;
+  justify-items: start;
+
+  margin-right: auto;
+  padding-left: clamp(20px, 15vw, 400px);
+  margin-top: 40px;
+  flex: 1 1 300px;
+}
+/* Each icon item */
+.hire-icon-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: #ccc;
+  font-size: clamp(12px, 2vw, 15px);
+}
+
+/* Icon container box */
+.hire-icon-box {
+  width: clamp(32px, 6vw, 48px);
+  height: clamp(32px, 6vw, 48px);
+  background: #1a1a1a;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Icon images */
+.hire-icon-box img {
+  width: clamp(18px, 4vw, 28px);
+  height: clamp(18px, 4vw, 28px);
+  object-fit: contain;
+}
+
+/* ===== Media Queries ===== */
+
+/* For smaller tablets and large phones */
+@media (max-width: 768px) {
+  .hire-container {
+    padding: 40px 20px;
+  }
+
+  .hire-left {
+    max-width: 100%;
+  }
+
+  .hire-icon-grid {
+    padding-left: 20px;
+    margin-top: 30px;
+    gap: 20px 20px;
+    grid-template-columns: repeat(2, 1fr);
+    flex-basis: 100%;
+  }
+}
+
+/* For phones */
+@media (max-width: 480px) {
+  .hire-container {
+    flex-direction: column;
+    padding: 20px 15px;
+  }
+
+  .hire-left {
+    max-width: 100%;
+  }
+
+  .hire-icon-grid {
+    padding-left: 0;
+    margin-top: 20px;
+    gap: 15px 30px;
+    grid-template-columns: repeat(2, 1fr);
+    justify-items: center; /* center icons on very small screens */
+    flex-basis: 100%;
+  }
+
+  .hire-icon-item {
+    justify-content: center; /* center icon + text */
+  }
+}
+
+    /* Swipe indicator for mobile */
+    .swipe-indicator {
+      display: none;
+      text-align: center;
+      color: #22c55e;
+      font-size: 0.9rem;
+      margin-top: 15px;
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0% { opacity: 0.5; }
+      50% { opacity: 1; }
+      100% { opacity: 0.5; }
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 1100px) {
+      .image-grid-section {
+        padding: 60px 40px;
+      }
+      
+      .grid-item {
+        height: 420px;
+      }
+    }
+    
+    @media (max-width: 900px) {
+      .hero h1 {
+        font-size: 3.5rem;
+      }
+      
+      .hero h1 span {
+        font-size: 3.2rem;
+      }
+      
+      .grid-container {
+        gap: 30px;
+      }
+      
+      .grid-item {
+        height: 380px;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 3rem;
+      }
+      
+      .hero h1 span {
+        font-size: 2.8rem;
+      }
+      
+      .grid-container {
+        grid-template-columns: 1fr;
+        gap: 25px;
+      }
+      
+      .grid-item {
+        height: 400px;
+      }
+      
+      .marquee-wrapper {
+        width: 90%;
+      }
+      
+      .form-inline {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .image-grid-section {
+        padding: 60px 30px;
+      }
+      
+      /* Timeline mobile styles */
+      .timeline-content-container {
+        padding: 0;
+        min-height: 400px;
+        margin: 20px 0;
+      }
+      
+      .timeline-wrapper {
+        flex-direction: column;
+        height: 100%;
+        min-height: 400px;
+      }
+      
+      .timeline-fade {
+        display: none;
+      }
+      
+      .timeline-track {
+        position: absolute;
+        width: 1px;
+        height: 80%;
+        margin: 40px 0;
+        left: 50%;
+        top: 0;
+        transform: translateX(-50%);
+      }
+      
+      .timeline-progress {
+        width: 100%;
+        height: 0;
+      }
+      
+      .timeline-events {
+        position: relative;
+        flex-direction: column;
+        height: 100%;
+        width: 100%;
+        transform: none !important;
+        padding: 40px 0;
+      }
+      
+      .timeline-event {
+        position: relative;
+        flex-direction: row;
+        width: 100%;
+        height: 70px;
+        margin: 10px 0;
+        left: auto !important;
+        transform: none !important;
+        justify-content: center;
+        padding: 0 15px;
+      }
+      
+      .timeline-event .dot-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-width: 30px;
+      }
+      
+      .timeline-event .timeline-line {
+        width: 40px;
+        height: 1px;
+        margin: 0 15px;
+        background: linear-gradient(to right, #444, transparent);
+        margin-top: 0;
+      }
+      
+      .timeline-event.active .timeline-line {
+        width: 60px;
+        height: 1px;
+        background: linear-gradient(to right, #22c55e, transparent);
+      }
+      
+      .timeline-event p {
+        margin-top: 0;
+        font-size: 1rem;
+        text-align: left;
+        min-width: 140px;
+      }
+      
+      .timeline-controls {
+        margin-top: 10px;
+        flex-wrap: wrap;
+      }
+      
+      .timeline-btn {
+        padding: 12px 20px;
+        font-size: 1rem;
+        flex: 1;
+        justify-content: center;
+        min-width: 140px;
+      }
+      
+      .event-details {
+        padding: 20px 15px;
+        margin: 20px auto 30px;
+      }
+      
+      .event-details h3 {
+        font-size: 1.3rem;
+      }
+      
+      .event-details p {
+        font-size: 0.95rem;
+      }
+      
+      .swipe-indicator {
+        display: block;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+      
+      .hero h1 span {
+        font-size: 2.2rem;
+      }
+      
+      .grid-title {
+        font-size: 2rem;
+      }
+      
+      .grid-item {
+        height: 350px;
+      }
+      
+      .grid-overlay h3 {
+        font-size: 1.5rem;
+      }
+      
+      .image-grid-section {
+        padding: 50px 20px;
+      }
+      
+      .timeline-title {
+        font-size: 1.7rem;
+      }
+      
+      .timeline-event {
+        height: 60px;
+      }
+      
+      .timeline-event p {
+        font-size: 0.95rem;
+      }
+      
+      .timeline-event .timeline-line {
+        width: 30px;
+        margin: 0 10px;
+      }
+      
+      .timeline-event.active .timeline-line {
+        width: 50px;
+      }
+      
+      .timeline-btn {
+        padding: 10px 15px;
+        font-size: 0.9rem;
+        min-width: 120px;
+      }
+      
+      .year-display {
+        font-size: 0.95rem;
+        margin-top: 5px;
+      }
+    }
+    /* ===== 300px Mobile Optimization ===== */
+@media (max-width: 300px) {
+  /* Typography Adjustments */
+  .hero h1 {
+    font-size: 2.2rem;
+    line-height: 1.05;
+  }
+  
+  .hero h1 span {
+    font-size: 1.9rem;
+  }
+  
+  .grid-title {
+    font-size: 1.7rem;
+  }
+  
+  .grid-subtitle,
+  .hero p {
+    font-size: 0.9rem;
+  }
+
+  /* Form Elements */
+  .email-input,
+  .shiny-cta {
+    width: 100%;
+    max-width: 260px;
+    font-size: 0.9rem;
+  }
+
+  /* Navigation */
+  .nav-links a {
+    margin: 0 5px;
+    font-size: 0.8rem;
+  }
+
+  /* Image Grid */
+  .grid-container {
+    padding: 10px 15px;
+    gap: 20px;
+  }
+  
+  .grid-item {
+    height: 320px;
+  }
+  
+  .grid-overlay {
+    padding: 15px;
+  }
+  
+  .grid-overlay h3 {
+    font-size: 1.3rem;
+  }
+  
+  .grid-overlay p {
+    font-size: 0.85rem;
+  }
+
+  /* Timeline */
+  .timeline-event p {
+    font-size: 0.85rem;
+    min-width: 110px;
+  }
+  
+  .timeline-btn {
+    padding: 8px 12px;
+    font-size: 0.85rem;
+    min-width: 100px;
+  }
+  
+  .event-details {
+    padding: 15px;
+  }
+
+  /* Hire Section */
+  .hire-icon-grid {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    padding-left: 0;
+  }
+  
+  .hire-icon-item {
+    justify-content: center;
+  }
+}
+/* ===== 300px Mobile Optimization ===== */
+@media (max-width: 300px) {
+  /* Button Optimizations */
+  .shiny-cta, 
+  .timeline-btn {
+    padding: 14px 10px;
+    font-size: 0.85rem;
+    width: 100%;
+    max-width: 260px;
+    margin: 5px 0;
+  }
+  
+  .form-inline {
+    gap: 8px;
+  }
+
+  /* Card Optimizations */
+  .grid-item {
+    height: 280px;
+    border-radius: 10px;
+  }
+  
+  .grid-overlay {
+    padding: 15px;
+  }
+  
+  .grid-overlay h3 {
+    font-size: 1.3rem;
+    margin-bottom: 5px;
+  }
+  
+  .grid-overlay .subtitle {
+    font-size: 0.8rem;
+    margin-bottom: 8px;
+  }
+  
+  .grid-overlay p {
+    font-size: 0.8rem;
+    line-height: 1.4;
+  }
+
+  /* Timeline Card Buttons */
+  .timeline-controls {
+    gap: 8px;
+  }
+  
+  .timeline-btn {
+    padding: 10px 12px;
+    font-size: 0.8rem;
+  }
+
+  /* Hire Section Cards */
+  .hire-icon-box {
+    width: 28px;
+    height: 28px;
+  }
+  
+  .hire-icon-box img {
+    width: 16px;
+    height: 16px;
+  }
+  
+  .hire-icon-item {
+    font-size: 0.8rem;
+    gap: 8px;
+  }
+
+  /* Spacing Adjustments */
+  .hero {
+    padding: 70px 15px;
+  }
+  
+  .image-grid-section {
+    padding: 40px 15px;
+  }
+  
+  .grid-container {
+    padding: 0 15px;
+    gap: 20px;
+  }
+  
+  .timeline-section {
+    padding: 50px 15px;
+  }
+  
+  .event-details {
+    padding: 15px;
+    margin: 20px auto;
+  }
+
+  /* Typography Scaling */
+  .hero h1 {
+    font-size: 2rem;
+  }
+  
+  .hero h1 span {
+    font-size: 1.8rem;
+  }
+  
+  .grid-title {
+    font-size: 1.6rem;
+  }
+  
+  .grid-subtitle {
+    font-size: 0.85rem;
+    margin-bottom: 30px;
+  }
+  
+  .timeline-title {
+    font-size: 1.5rem;
+  }
+  
+  .timeline-quote {
+    font-size: 1rem;
+  }
+}
+/* ===== Mobile Responsive Fixes ===== */
+@media (max-width: 768px) {
+  /* Fix hero section spacing */
+  .hero {
+    padding: 60px 20px !important;
+  }
+  
+  /* Compact form layout */
+  .form-inline {
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .email-input, 
+  .shiny-cta {
+    width: 100%;
+    max-width: 280px;
+    box-sizing: border-box;
+  }
+
+  /* Fix hire section spacing */
+  .hire-container {
+    padding: 40px 20px !important;
+    margin-left: 0 !important;
+  }
+  
+  .hire-icon-grid {
+    padding-left: 0 !important;
+    margin-top: 30px;
+    margin-right: 0;
+  }
+
+  /* Adjust logo marquee positioning */
+  .marquee-wrapper {
+    bottom: -50px;
+    margin-bottom: 40px;
+  }
+  
+  /* Timeline adjustments */
+  .timeline-section {
+    padding: 60px 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Further reduce spacing */
+  .hero {
+    padding: 50px 15px !important;
+  }
+  
+  .hero h1 {
+    font-size: 2.5rem;
+  }
+  
+  .hero h1 span {
+    font-size: 2.2rem;
+  }
+  
+  /* Compact form elements */
+  .email-input, 
+  .shiny-cta {
+    padding: 12px 15px;
+    font-size: 0.9rem;
+  }
+  
+  /* Hire section layout fixes */
+  .hire-icon-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+  }
+  
+  .hire-icon-item {
+    font-size: 0.85rem;
+  }
+  
+  /* Image grid adjustments */
+  .image-grid-section {
+    padding: 50px 15px;
+  }
+  
+  .grid-item {
+    height: 320px;
+  }
+  
+  /* Logo positioning fix */
+  .marquee-wrapper {
+    width: 95%;
+    bottom: -40px;
+  }
+}
+
+/* Ultra-mobile optimization (300-350px) */
+@media (max-width: 350px) {
+  /* Final spacing reduction */
+  .hero {
+    padding: 40px 12px !important;
+  }
+  
+  .hero h1 {
+    font-size: 2rem;
+  }
+  
+  .hero h1 span {
+    font-size: 1.8rem;
+  }
+  
+  /* Form element sizing */
+  .email-input, 
+  .shiny-cta {
+    max-width: 260px;
+    padding: 10px 12px;
+    font-size: 0.85rem;
+  }
+  
+  /* Hire section vertical layout */
+  .hire-icon-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  /* Complete logo gap fix */
+  .marquee-wrapper {
+    bottom: -30px;
+    margin-bottom: 30px;
+  }
+  
+  /* Timeline button sizing */
+  .timeline-btn {
+    padding: 10px 15px;
+    font-size: 0.85rem;
+  }
+}
+/* Remove logo grid and hire section on mobile */
+@media (max-width: 500px) {
+  /* Completely remove logo grid */
+  .marquee-wrapper {
+    display: none !important;
+  }
+  
+  /* Completely remove hire section */
+  .hire-container {
+    display: none !important;
+  }
+  
+  /* Adjust hero section spacing */
+  .hero {
+    padding-bottom: 50px !important;
+  }
+  
+  /* Close gap between hero and image grid */
+  .image-grid-section {
+    padding-top: 30px !important;
+    margin-top: -40px !important;
+  }
+  
+  /* Fix timeline section spacing */
+  .timeline-section {
+    padding-top: 30px !important;
+  }
+  
+  /* Adjust image grid spacing */
+  .grid-container {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+}
+
+  </style>
+</head>
+<body>
+  <section class="landing-section">
+ 
+      <nav class="navbar navbar-expand-lg navbar-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand text-white" href="#">Sarvesh</a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNav"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+      <ul class="navbar-nav">
+<li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
+<li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About</a></li>
+<li class="nav-item"><a class="nav-link" href="{% url 'addproject' %}">Projects</a></li>
+
+      </ul>
+    </div>
+  </div>
+</nav>
+  </header>
+
+  <section class="hero">
+    <h1>Hi, I'm the Reason <br><span>This Site Exists</span></h1>
+    <p>Full-stack developer, designer, and IoT wizard — I build smooth apps, pretty interfaces, and gadgets that sometimes obey me. I make code sing, sensors behave, and robots slightly less confused. Powered by caffeine, curiosity, and an unhealthy obsession with blinking lights</p>
+    
+  <form method="POST" action="{% url 'send_about_me' %}">
+  {% csrf_token %}
+  <div class="form-inline">
+    <input type="email" name="email" class="email-input" placeholder="Enter your email" required />
+    <button type="submit" class="shiny-cta">About Me</button>
+  </div>
+</form>
+
+    <div class="marquee-wrapper">
+      <div class="fade-left"></div>
+      <div class="fade-right"></div>
+      <div class="marquee-track">
+        <img class="icon" src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg" alt="Python" />
+        <img class="icon" src="https://cdn-icons-png.flaticon.com/512/3536/3536297.png" alt="REST API" />
+        <img class="icon" src="https://cdn-icons-png.flaticon.com/512/1055/1055687.png" alt="Database" />
+        <img class="icon" src="https://cdn-icons-png.flaticon.com/512/733/733553.png" alt="Git" />
+        <img class="icon" src="https://cdn-icons-png.flaticon.com/512/3064/3064720.png" alt="ML" />
+        <img class="icon" src="https://cdn-icons-png.flaticon.com/512/919/919836.png" alt="Pandas" />
+        <img class="icon" src="https://cdn-icons-png.flaticon.com/512/4144/4144789.png" alt="Cloud" />
+        <img class="icon" src="https://upload.wikimedia.org/wikipedia/commons/2/29/Postgresql_elephant.svg" alt="PostgreSQL" />
+        <img class="icon" src="https://www.vectorlogo.zone/logos/firebase/firebase-icon.svg" alt="Firebase" />
+        <img class="icon" src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg" alt="Python" />
+        <img class="icon" src="https://cdn-icons-png.flaticon.com/512/3536/3536297.png" alt="REST API" />
+        <img class="icon" src="https://cdn-icons-png.flaticon.com/512/1055/1055687.png" alt="Database" />
+        <img class="icon" src="https://cdn-icons-png.flaticon.com/512/733/733553.png" alt="Git" />
+        <img class="icon" src="https://cdn-icons-png.flaticon.com/512/3064/3064720.png" alt="ML" />
+        <img class="icon" src="https://cdn-icons-png.flaticon.com/512/919/919836.png" alt="Pandas" />
+        <img class="icon" src="https://cdn-icons-png.flaticon.com/512/4144/4144789.png" alt="Cloud" />
+        <img class="icon" src="https://upload.wikimedia.org/wikipedia/commons/2/29/Postgresql_elephant.svg" alt="PostgreSQL" />
+        <img class="icon" src="https://www.vectorlogo.zone/logos/firebase/firebase-icon.svg" alt="Firebase" />
+      </div>
+    </div>
+  </section>
+  
+  <!-- Image Grid Section -->
+  <section class="image-grid-section">
+    <h2 class="grid-title">My Collection of ‘Wait, That Works?’ Moments</h2>
+    <p class="grid-subtitle">Proof that sometimes genius is just stubbornness in disguise</p>
+    
+    <div class="grid-container">
+      <div class="grid-item">
+        <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Database Management">
+        <div class="grid-overlay">
+          <h3>Aquasense: ESP32’s Splashy Adventure</h3>
+          <span class="subtitle">Aqua Secrets</span>
+          <p>Fishing data from lakes and rivers with sensors — because even water deserves a smart assistant. Powered by ESP32 and a bit of sensor magic</p>
+        </div>
+      </div>
+      <div class="grid-item">
+        <img src="https://images.unsplash.com/photo-1550439062-609e1531270e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Authentication">
+        <div class="grid-overlay">
+          <h3>The gadget boss you didn’t know you needed</h3>
+          <span class="subtitle">Smart Boss</span>
+          <p>his little genius controls your gadgets—lights, fans, and that weird thing in the corner. It listens because I built it. Smarter, sassier, and battery-proof.
+
+</p>
+        </div>
+      </div>
+      <div class="grid-item">
+        <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Serverless Functions">
+        <div class="grid-overlay">
+          <h3>Aquasense HQ: Where Water Gets Watched</h3>
+          <span class="subtitle">Data so fresh, even the fish are jealous.</span>
+          <p>Welcome to Aquasense HQ — turning sensor chaos into easy charts. It collects all the juicy lake and river gossip, so you don’t have to get wet. pH, temperature, or weird blips — this dashboard tracks it all with style and a dash of Python magic.
+
+</p>
+        </div>
+      </div>
+      <div class="grid-item">
+        <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Storage">
+        <div class="grid-overlay">
+          <h3>Sensor Spy API</h3>
+          <span class="subtitle">Your gadgets’ secret data pipeline.</span>
+          <p>SThis REST API quietly collects sensor data from lakes and gadgets, delivering pH, temperature, and more—fast, reliable, and drama-free.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Hire Section -->
+  <div class="hire-container">
+    <!-- Left Content -->
+    <div class="hire-left">
+      <p class="hire-label">Hire Me Come On</p>
+      <h1>
+      Let Me Tell You a Secret... <br>
+       Shhh! Why You Should Hire Me<br>
+       because
+      </h1>
+      <p class="hire-description">
+       I doo code like a champ. IoT? Check. Full-stack? Double check. Freelance SketchUp artist? Sounds fishy, right? But nope, that’s my secret sauce! I build gadgets that actually work, apps that don’t crash, and designs that don’t make you cringe. If you want someone who’s part tech wizard, part creative ninja, and 100% fun to work with 
+      </p>
+      <a href="#" class="hire-learn">Wanna more about me ?→</a>
+    </div>
+
+    <!-- Right Icon Grid -->
+    <div class="hire-icon-grid">
+      <div class="hire-icon-item">
+        <div class="hire-icon-box">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python">
+        </div>
+        <span>Python</span>
+      </div>
+      <div class="hire-icon-item">
+        <div class="hire-icon-box">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg" alt="C++">
+        </div>
+        <span>C++</span>
+      </div>
+      <div class="hire-icon-item">
+        <div class="hire-icon-box">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML">
+        </div>
+        <span>HTML</span>
+      </div>
+      <div class="hire-icon-item">
+        <div class="hire-icon-box">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS">
+        </div>
+        <span>CSS</span>
+      </div>
+      <div class="hire-icon-item">
+        <div class="hire-icon-box">
+         <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/adobeillustrator/adobeillustrator-original.svg" alt="Illustrator" />
+        </div>
+        <span>Illustrator</span>
+      </div>
+      <div class="hire-icon-item">
+        <div class="hire-icon-box">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/django/django-plain.svg" alt="Django">
+        </div>
+        <span>Django</span>
+      </div>
+      <div class="hire-icon-item">
+        <div class="hire-icon-box">
+          <img src="https://img.icons8.com/external-outline-juicy-fish/60/000000/external-rest-api-coding-and-development-outline-outline-juicy-fish.png" alt="REST API">
+        </div>
+        <span>REST API</span>
+      </div>
+      <div class="hire-icon-item">
+        <div class="hire-icon-box">
+          <img src="https://img.icons8.com/ios-filled/50/microchip.png" alt="Embedded">
+        </div>
+        <span>Embedded</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- New Timeline Section -->
+  <section class="timeline-section">
+    <div class="timeline-container-wrapper">
+      <div class="timeline-header">
+        <p class="timeline-handle">@sarveshver</p>
+        <h1 class="timeline-title">Timeline of a Guy Who Automated Lights <span> but Not His Life</span></h1>
+        <p class="timeline-quote" id="timeline-quote">"From servers to sensors, still buffering life."</p>
+      </div>
+      
+      <div class="timeline-content-container">
+        <div class="timeline-wrapper">
+          <div class="timeline-fade timeline-fade-left"></div>
+          <div class="timeline-fade timeline-fade-right"></div>
+          
+          <div class="timeline-track">
+            <div class="timeline-progress" id="timeline-progress"></div>
+          </div>
+          
+          <div class="timeline-events" id="timeline-events">
+            <!-- Events will be populated by JavaScript -->
+          </div>
+        </div>
+        
+        <div class="swipe-indicator">
+          <i class="fas fa-arrows-left-right"></i> Swipe to navigate
+        </div>
+        
+        <div class="event-details" id="event-details">
+          <h3>Video Editing Journey</h3>
+          <p>Select an event to see details about the life of a video editor</p>
+        </div>
+        
+        <div class="timeline-controls">
+          <button class="timeline-btn" id="prev-btn" disabled>
+            <i class="fas fa-chevron-left"></i> Previous
+          </button>
+          <button class="timeline-btn" id="next-btn">
+            Next <i class="fas fa-chevron-right"></i>
+          </button>
+        </div>
+        
+        <div class="year-display" id="year-display">Select an event</div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Enhanced parallax effect for grid items
+      const gridItems = document.querySelectorAll('.grid-item');
+      
+      // Set initial state for animation
+      gridItems.forEach((item, index) => {
+        item.style.opacity = "0";
+        item.style.transform = "translateY(30px)";
+        item.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+        item.style.transitionDelay = `${index * 0.15}s`;
+      });
+      
+      // Trigger animation when in view
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = "1";
+            entry.target.style.transform = "translateY(0)";
+          }
+        });
+      }, { threshold: 0.1 });
+      
+      gridItems.forEach(item => {
+        observer.observe(item);
+      });
+      
+      // Timeline functionality
+      const timelineEvents = document.getElementById('timeline-events');
+      const quoteElement = document.getElementById('timeline-quote');
+      const eventDetails = document.getElementById('event-details');
+      const prevBtn = document.getElementById('prev-btn');
+      const nextBtn = document.getElementById('next-btn');
+      const timelineProgress = document.getElementById('timeline-progress');
+      const yearDisplay = document.getElementById('year-display');
+      
+      const events = [
+        {
+          title: "BIRTH<span>!</span>",
+          year: "2016 – 2019",
+          quote: "The Coding Noob Era: Coffee & Confusion",
+          description: "B.Sc. Computer Science, Tagore College of Arts and Science. Learned to code, survive endless group projects, and drink coffee like it’s a programming language. Dreamt of building smart homes — mostly to automate getting out of bed.",
+          position: 0
+        },
+        {
+          title: "Degree Unlocked",
+          year: "2020 – 2022",
+          quote: "Mastering the Art of Googling and Procrastination",
+          description: "M.Sc. Information Technology, University of Madras. Mastered Googling errors at lightning speed and writing essays on 'the future of AI taking over.' Got serious with IoT but still no clue how to automate my own life — yet.",
+          position: 25
+        },
+        {
+          title: "Beta Testing Life",
+          year: "2022 – 2023",
+          quote: "Startup Dreams & Wi-Fi Nightmares",
+          description: "Full Stack Course + Startup Plans. Built a smart switch that actually worked—sometimes. Planned a startup for home automation, which mostly meant staying up late, stressing, and yelling at the Wi-Fi. Tried freelancing in SketchUp, mostly doodling instead of designing.",
+          position: 50
+        },
+        {
+          title: "Freelancer.exe Crashed",
+          year: "2023 – 2024",
+          quote: "Freelance Fumbles and Client Vanishing Acts",
+          description: "The 'Oops, Where Did the Year Go?' Phase. Freelance life hit hard: ghost clients, tight deadlines, and realizing that being your own boss is code for 'You’re also the janitor, accountant, and emotional support.' Sleep became a myth.",
+          position: 75
+        },
+        {
+          title: "From Kolozen to <span>Solo-Zen</span>",
+          year: "2024-2025",
+          quote: "From Cubicle to Coffee Shop",
+          description: "At Kolozen Tech World Pvt Ltd, I leveled up in real-world coding, meetings, and mediocre coffee. Now channeling all that into freelancing—with fewer meetings and better snacks.",
+          position: 100
+        }
+      ];
+      
+      let currentIndex = 2; // Start with the center event
+      let touchStartX = 0;
+      let touchStartY = 0;
+      let isMobile = window.innerWidth <= 768;
+      
+      // Create event elements
+      function createEvents() {
+        timelineEvents.innerHTML = '';
+        
+        events.forEach((event, index) => {
+          // Create event element
+          const eventElement = document.createElement('div');
+          eventElement.className = 'timeline-event';
+          if (index === currentIndex) eventElement.classList.add('active');
+          
+          // For mobile, we need a different structure
+          if (isMobile) {
+            eventElement.innerHTML = `
+              <div class="dot-container">
+                <div class="timeline-dot"></div>
+              </div>
+              <div class="timeline-line"></div>
+              <p>${event.title}</p>
+            `;
+          } else {
+            eventElement.innerHTML = `
+              <div class="timeline-dot"></div>
+              <div class="timeline-line"></div>
+              <p>${event.title}</p>
+            `;
+          }
+          
+          eventElement.dataset.index = index;
+          
+          // Add click event
+          eventElement.addEventListener('click', () => {
+            goToEvent(index);
+          });
+          
+          timelineEvents.appendChild(eventElement);
+        });
+        
+        positionEvents();
+      }
+      
+      // Position events horizontally
+      function positionEvents() {
+        if (isMobile) return; // No positioning needed for mobile
+        
+        const eventElements = document.querySelectorAll('.timeline-event');
+        const containerWidth = timelineEvents.offsetWidth;
+        const centerPosition = containerWidth / 2;
+        
+        eventElements.forEach((event, index) => {
+          const eventWidth = 100; // Width of each event
+          const position = (index - currentIndex) * (eventWidth * 2);
+          
+          event.style.left = `${centerPosition + position}px`;
+          event.style.transform = `translateX(-50%)`;
+        });
+      }
+      
+      // Update the display based on current event
+      function updateDisplay() {
+        const eventElements = document.querySelectorAll('.timeline-event');
+        
+        // Update classes
+        eventElements.forEach((event, index) => {
+          event.classList.toggle('active', index === currentIndex);
+        });
+        
+        // Update content
+        const currentEvent = events[currentIndex];
+        quoteElement.innerHTML = `"${currentEvent.quote}"`;
+        eventDetails.innerHTML = `
+          <h3>${currentEvent.title.replace(/<[^>]*>/g, '')} (${currentEvent.year})</h3>
+          <p>${currentEvent.description}</p>
+        `;
+        yearDisplay.textContent = currentEvent.year;
+        
+        // Update progress bar
+        timelineProgress.style.width = `${currentEvent.position}%`;
+        
+        // Update button states
+        prevBtn.disabled = currentIndex === 0;
+        nextBtn.disabled = currentIndex === events.length - 1;
+        
+        if (!isMobile) {
+          positionEvents();
+        }
+      }
+      
+      // Navigate to specific event
+      function goToEvent(index) {
+        if (index < 0 || index >= events.length) return;
+        currentIndex = index;
+        updateDisplay();
+      }
+      
+      // Navigation button events
+      prevBtn.addEventListener('click', () => {
+        if (currentIndex > 0) {
+          goToEvent(currentIndex - 1);
+        }
+      });
+      
+      nextBtn.addEventListener('click', () => {
+        if (currentIndex < events.length - 1) {
+          goToEvent(currentIndex + 1);
+        }
+      });
+      
+      // Keyboard navigation
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft' && currentIndex > 0) {
+          goToEvent(currentIndex - 1);
+        } else if (e.key === 'ArrowRight' && currentIndex < events.length - 1) {
+          goToEvent(currentIndex + 1);
+        }
+      });
+      
+      // Touch events for mobile swipe
+      function handleTouchStart(e) {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+      }
+      
+      function handleTouchMove(e) {
+        if (!touchStartX || !touchStartY) return;
+        
+        const touchX = e.touches[0].clientX;
+        const touchY = e.touches[0].clientY;
+        
+        const diffX = touchStartX - touchX;
+        const diffY = touchStartY - touchY;
+        
+        // Only consider horizontal swipes
+        if (Math.abs(diffX) > Math.abs(diffY)) {
+          e.preventDefault();
+        }
+      }
+      
+      function handleTouchEnd(e) {
+        if (!touchStartX || !touchStartY) return;
+        
+        const touchEndX = e.changedTouches[0].clientX;
+        const touchEndY = e.changedTouches[0].clientY;
+        
+        const diffX = touchStartX - touchEndX;
+        const diffY = touchStartY - touchEndY;
+        
+        // Only consider horizontal swipes
+        if (Math.abs(diffX) > Math.abs(diffY)) {
+          if (diffX > 50 && currentIndex < events.length - 1) {
+            // Swiped left
+            goToEvent(currentIndex + 1);
+          } else if (diffX < -50 && currentIndex > 0) {
+            // Swiped right
+            goToEvent(currentIndex - 1);
+          }
+        }
+        
+        touchStartX = 0;
+        touchStartY = 0;
+      }
+      
+      // Add touch event listeners for mobile
+      if ('ontouchstart' in window) {
+        document.addEventListener('touchstart', handleTouchStart, { passive: true });
+        document.addEventListener('touchmove', handleTouchMove, { passive: false });
+        document.addEventListener('touchend', handleTouchEnd, { passive: true });
+      }
+      
+      // Handle window resize
+      window.addEventListener('resize', () => {
+        const newIsMobile = window.innerWidth <= 768;
+        if (newIsMobile !== isMobile) {
+          isMobile = newIsMobile;
+          createEvents();
+        }
+        updateDisplay();
+      });
+      
+      // Initialize
+      createEvents();
+      updateDisplay();
+    });
+  </script>
+</body>
+</html>

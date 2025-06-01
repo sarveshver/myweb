@@ -3,11 +3,15 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
+
 # Load .env variables
 
 
 # Build paths inside the project
 BASE_DIR = Path(__file__).resolve().parent.parent
+load_dotenv(dotenv_path=os.path.join(BASE_DIR, '.env'), override=True)
+
+print("EMAIL_HOST_USER =", os.getenv('EMAIL_HOST_USER'))
 TEMPLATES_DIRS = os.path.join(BASE_DIR, 'templates')
 
 # Security key & debug
@@ -112,6 +116,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'sarveshver77@gmail.com'
-EMAIL_HOST_PASSWORD = 'rqaz hguz bbud owlc'
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+
